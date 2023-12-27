@@ -9,7 +9,7 @@ class QueuedEventsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/queued_events.php', 'queued_events'
+            __DIR__.'/../config/queued_events.php', 'queued_events'
         );
     }
 
