@@ -1,0 +1,69 @@
+{
+    "name": "acdphp/laravel-queued-events",
+    "description": "Dispatching Events into queues. This is especially useful for distributed systems events using fanout queues.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlo Dinopol",
+            "email": "carlo.dinopol@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.5",
+        "phpstan/phpstan": "^1.10",
+        "larastan/larastan": "^2.7",
+        "ekino/phpstan-banned-code": "^1.0",
+        "orchestra/testbench": "^7.38",
+        "pestphp/pest": "^1.23",
+        "pestphp/pest-plugin-laravel": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acdphp\\QueuedEvents\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acdphp\\QueuedEvents\\Tests\\": "tests",
+            "Workbench\\App\\": "workbench/app/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Acdphp\\QueuedEvents\\QueuedEventsServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/pint",
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "test": [
+            "@php vendor/bin/pest"
+        ]
+    }
+}
