@@ -15,5 +15,8 @@ class QueuedEventsServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->publishes([
+            __DIR__.'/../config/queued_events.php' => config_path('queued_events.php'),
+        ], 'queued-events-config');
     }
 }

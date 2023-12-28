@@ -2,32 +2,45 @@
 
 namespace Acdphp\QueuedEvents\Events;
 
-use Acdphp\QueuedEvents\Jobs\QueuedEventJob;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Foundation\Events\Dispatchable;
 
 class QueuedEvent
 {
-    public static function queuedDispatch(): PendingDispatch
+    use Dispatchable
+    {
+        dispatch as internalDispatch;
+        dispatchIf as internalDispatchIf;
+        dispatchUnless as internalDispatchUnless;
+    }
+
+    public static function dispatch(): PendingDispatch
     {
         /**
          * @phpstan-ignore-next-line
          */
-        return QueuedEventJob::dispatch(new static(...func_get_args()));
+        return config('queued_events.job')::dispatch(new static(...func_get_args()));
     }
 
-    public static function queuedDispatchIf(bool $boolean, mixed ...$arguments): ?PendingDispatch
+    public static function dispatchIf(bool $boolean, mixed ...$arguments): ?PendingDispatch
     {
         if ($boolean) {
-            return static::queuedDispatch(...$arguments);
+            /**
+             * @phpstan-ignore-next-line
+             */
+            return static::dispatch(...$arguments);
         }
 
         return null;
     }
 
-    public static function queuedDispatchUnless(bool $boolean, mixed ...$arguments): ?PendingDispatch
+    public static function dispatchUnless(bool $boolean, mixed ...$arguments): ?PendingDispatch
     {
         if (! $boolean) {
-            return static::queuedDispatch(...$arguments);
+            /**
+             * @phpstan-ignore-next-line
+             */
+            return static::dispatch(...$arguments);
         }
 
         return null;
