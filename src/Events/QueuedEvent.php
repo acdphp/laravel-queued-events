@@ -25,6 +25,9 @@ class QueuedEvent
     public static function dispatchIf(bool $boolean, mixed ...$arguments): ?PendingDispatch
     {
         if ($boolean) {
+            /**
+             * @phpstan-ignore-next-line
+             */
             return static::dispatch(...$arguments);
         }
 
@@ -34,6 +37,9 @@ class QueuedEvent
     public static function dispatchUnless(bool $boolean, mixed ...$arguments): ?PendingDispatch
     {
         if (! $boolean) {
+            /**
+             * @phpstan-ignore-next-line
+             */
             return static::dispatch(...$arguments);
         }
 
