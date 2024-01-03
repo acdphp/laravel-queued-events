@@ -16,10 +16,7 @@ class QueuedEvent
 
     public static function dispatch(): PendingDispatch
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        return config('queued_events.job')::dispatch(new static(...func_get_args()));
+        return config('queued_events.job')::dispatch(static::class, func_get_args());
     }
 
     public static function dispatchIf(bool $boolean, mixed ...$arguments): ?PendingDispatch

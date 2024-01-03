@@ -14,7 +14,7 @@ test('dispatch should dispatch a job and not dispatch event', function () {
     UserCreatedEvent::dispatch($payload);
 
     Bus::assertDispatched(static function (QueuedEventJob $job) use ($payload) {
-        return $job->event->object === $payload;
+        return $job->arguments[0] === $payload;
     });
 
     Event::assertNotDispatched(UserCreatedEvent::class);
@@ -44,7 +44,7 @@ test('dispatchIf should dispatch a job and not dispatch event', function () {
     UserCreatedEvent::dispatchIf(true, $payload);
 
     Bus::assertDispatched(static function (QueuedEventJob $job) use ($payload) {
-        return $job->event->object === $payload;
+        return $job->arguments[0] === $payload;
     });
 
     Event::assertNotDispatched(UserCreatedEvent::class);
@@ -74,7 +74,7 @@ test('dispatchUnless should dispatch a job and not dispatch event', function () 
     UserCreatedEvent::dispatchUnless(false, $payload);
 
     Bus::assertDispatched(static function (QueuedEventJob $job) use ($payload) {
-        return $job->event->object === $payload;
+        return $job->arguments[0] === $payload;
     });
 
     Event::assertNotDispatched(UserCreatedEvent::class);
@@ -124,7 +124,7 @@ test('event should be dispatched on job handle', function () {
 
     $payload = ['foo' => 'bar'];
 
-    config('queued_events.job')::dispatch(new UserCreatedEvent($payload));
+    config('queued_events.job')::dispatch(UserCreatedEvent::class, [$payload]);
 
     Event::assertDispatched(static function (UserCreatedEvent $event) use ($payload) {
         return $event->object === $payload;
