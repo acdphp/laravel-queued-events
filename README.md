@@ -57,15 +57,19 @@ Dispatching Events into queues. This is especially useful for distributed system
    ```
 
 ## Configuration
-- By default, the queue connection will be whatever your `QUEUE_CONNECTION` is set. You may override this by setting `QUEUED_EVENTS_QUEUE_CONNECTION`
-- By default, the queue will be `default`. You may override this by setting `QUEUED_EVENTS_QUEUE`
-- This config, of course, can be overridden in your code as seen from the usage example or by publishing it:
-    ```shell
-    php artisan vendor:publish --tag=queued-events-config
-    ```
+```shell
+php artisan vendor:publish --tag=queued-events-config
+```
+
+### QUEUED_EVENTS_QUEUE_CONNECTION
+The default queue connection will be whatever your `QUEUE_CONNECTION` is set. You may override this by setting `QUEUED_EVENTS_QUEUE_CONNECTION`
+
+### QUEUED_EVENTS_QUEUE
+The default queue will be `default`. You may override this by setting `QUEUED_EVENTS_QUEUE`
+
 
 ## Notes
-- Using all Laravel helper to dispatch except static `::dispatch`, `::dispatchIf` and `::dispatchUnless` will dispatch the job internally. Example `event(...)` or `app('events')->dispatch(...)`.
+- Using Laravel helpers, like `event(...)` or `app('events')->dispatch(...)`, will dispatch the job internally. Only use `::dispatch`, `::dispatchIf` and `::dispatchUnless` to dispatch on queue.
 - Use Laravel's queued listener if you're only using this in a monolithic application. 
 
 ## License
